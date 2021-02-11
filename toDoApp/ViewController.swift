@@ -7,14 +7,23 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ViewController: UITableViewController {
    
     var arr = [Item]()
+    //var arr: Results<Item>?
+    let realm = try! Realm()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        //loadItems()
         // Do any additional setup after loading the view.
     }
+    /*func loadItems(){
+        arr = realm.objects(Item.self)
+        tableView.reloadData()
+    }*/
     
     
     //MARK: -TableView DataSource Methods
@@ -41,8 +50,12 @@ class ViewController: UITableViewController {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "ADD", style: .default){ (action) in
-            let newItem = Item(text: textField.text!, date: Date())
+            //let newItem = Item(text: textField.text!, date: Date())
+            //let newItem = Item(text: textField.text!, date: Date())
+            let newItem = Item()
+            newItem.text = textField.text!
             self.arr.append(newItem)
+            self.save(item: newItem)
             self.tableView.reloadData()
         }
         alert.addTextField{ (alertTextField) in
@@ -53,6 +66,15 @@ class ViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    
+    func save(item: Item){
+        do{
+            try realm.write{
+                realm.add(item)
+            }
+        }catch{
+            print("error in storing")
+        }
+        tableView.reloadData()
+    }
 }
 

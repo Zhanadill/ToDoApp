@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Item{
-    var text:String
-    var done:Bool = false
-    var date:Date
+class Item: Object{
+    @objc dynamic var text:String = ""
+    @objc dynamic var done:Bool = false
+    //@objc dynamic var date:Date
 }
