@@ -13,6 +13,7 @@
 		230CE31225D539DD00F4DE91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 230CE31025D539DD00F4DE91 /* Main.storyboard */; };
 		230CE31425D539DF00F4DE91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 230CE31325D539DF00F4DE91 /* Assets.xcassets */; };
 		230CE31725D539DF00F4DE91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 230CE31525D539DF00F4DE91 /* LaunchScreen.storyboard */; };
+		23D2E37C25D5B55300D7158C /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D2E37B25D5B55300D7158C /* CategoryViewController.swift */; };
 		23FEE93E25D53CC300E88627 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FEE93D25D53CC300E88627 /* Item.swift */; };
 		DF9A43A673E11C4D8AD8EF5A /* Pods_toDoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A77B81D77073FF0A99F749 /* Pods_toDoApp.framework */; };
 /* End PBXBuildFile section */
@@ -26,6 +27,7 @@
 		230CE31325D539DF00F4DE91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		230CE31625D539DF00F4DE91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		230CE31825D539DF00F4DE91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23D2E37B25D5B55300D7158C /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		23FEE93D25D53CC300E88627 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		469F003FDFF768E5C9B850EA /* Pods-toDoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toDoApp.release.xcconfig"; path = "Target Support Files/Pods-toDoApp/Pods-toDoApp.release.xcconfig"; sourceTree = "<group>"; };
 		4E116BDDDE908BD4DE072561 /* Pods-toDoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-toDoApp.debug.xcconfig"; path = "Target Support Files/Pods-toDoApp/Pods-toDoApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -67,12 +69,9 @@
 			children = (
 				230CE30A25D539DD00F4DE91 /* AppDelegate.swift */,
 				230CE30C25D539DD00F4DE91 /* SceneDelegate.swift */,
-				230CE31025D539DD00F4DE91 /* Main.storyboard */,
-				230CE30E25D539DD00F4DE91 /* ViewController.swift */,
-				23FEE93D25D53CC300E88627 /* Item.swift */,
-				23D2E37A25D543AA00D7158C /* Controller */,
-				23D2E37925D543A300D7158C /* View */,
 				23D2E37825D5439C00D7158C /* Model */,
+				23D2E37925D543A300D7158C /* View */,
+				23D2E37A25D543AA00D7158C /* Controller */,
 				230CE31325D539DF00F4DE91 /* Assets.xcassets */,
 				230CE31525D539DF00F4DE91 /* LaunchScreen.storyboard */,
 				230CE31825D539DF00F4DE91 /* Info.plist */,
@@ -83,6 +82,7 @@
 		23D2E37825D5439C00D7158C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				23FEE93D25D53CC300E88627 /* Item.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -90,6 +90,7 @@
 		23D2E37925D543A300D7158C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				230CE31025D539DD00F4DE91 /* Main.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -97,6 +98,8 @@
 		23D2E37A25D543AA00D7158C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				230CE30E25D539DD00F4DE91 /* ViewController.swift */,
+				23D2E37B25D5B55300D7158C /* CategoryViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23D2E37C25D5B55300D7158C /* CategoryViewController.swift in Sources */,
 				23FEE93E25D53CC300E88627 /* Item.swift in Sources */,
 				230CE30F25D539DD00F4DE91 /* ViewController.swift in Sources */,
 				230CE30B25D539DD00F4DE91 /* AppDelegate.swift in Sources */,

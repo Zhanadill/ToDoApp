@@ -10,30 +10,29 @@ import UIKit
 import RealmSwift
 
 class ViewController: UITableViewController {
-   
-    var arr = [Item]()
-    //var arr: Results<Item>?
+    var arr: Results<Item>?
     let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //loadItems()
-        // Do any additional setup after loading the view.
+        loadItems()
     }
-    /*func loadItems(){
-        arr = realm.objects(Item.self)
+    
+    //MARK: loadItems()
+    func loadItems(){
+        arr = (realm.objects(Item.self)).sorted(byKeyPath:"date", ascending: false)
         tableView.reloadData()
-    }*/
+    }
     
     
     //MARK: -TableView DataSource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arr.count
+        return arr?.count ?? 1
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "aaa", for: indexPath)
-        cell.textLabel?.text = arr[indexPath.row].text
-        cell.accessoryType = arr[indexPath.row].done ? .checkmark : .none
+        cell.textLabel?.text = arr?[indexPath.row].text ?? "No categories"
+        cell.accessoryType = arr![indexPath.row].done ? .checkmark : .none
         return cell
     }
     
@@ -41,20 +40,27 @@ class ViewController: UITableViewController {
     
     //MARK: -TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        arr[indexPath.row].done = !arr[indexPath.row].done
+        if let item = arr?[indexPath.row]{
+            do{
+                try realm.write{
+                    item.done = !item.done
+                }
+            }catch{
+                print("error saving done status \(error)")
+            }
+        }
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.reloadData()
     }
     
+    //MARK: addButtonPressed()
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "ADD", style: .default){ (action) in
-            //let newItem = Item(text: textField.text!, date: Date())
-            //let newItem = Item(text: textField.text!, date: Date())
             let newItem = Item()
             newItem.text = textField.text!
-            self.arr.append(newItem)
+            newItem.date = Date()
             self.save(item: newItem)
             self.tableView.reloadData()
         }
@@ -66,6 +72,7 @@ class ViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK: save()
     func save(item: Item){
         do{
             try realm.write{
@@ -78,3 +85,18 @@ class ViewController: UITableViewController {
     }
 }
 
+
+extension ViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
+        arr = arr?.filter("text CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "date", ascending: false)
+        tableView.reloadData()
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
+        if searchBar.text?.count == 0 {
+            loadItems()
+            DispatchQueue.main.async{
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
