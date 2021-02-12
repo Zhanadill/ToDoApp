@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 
 class ItemViewController: RootViewController {
+    @IBOutlet weak var searchBar: UISearchBar!
     var arr: Results<Item>?
     let realm = try! Realm()
     
@@ -23,7 +24,20 @@ class ItemViewController: RootViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorStyle = .none
-        tableView.rowHeight = 80.0
+        tableView.rowHeight = 70.0
+        tableView.backgroundColor = UIColor(hexString: selectedCategory?.color)
+        tableView.alwaysBounceVertical = false
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        if let color = UIColor(hexString: selectedCategory?.color){
+            navigationController?.navigationBar.backgroundColor = color
+            navigationController?.navigationBar.tintColor = UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)
+            navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)!]
+            searchBar.barTintColor = color.lighten(byPercentage: 0.05)
+            searchBar.searchTextField.textColor = UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)
+        }
     }
     
     
@@ -108,6 +122,12 @@ extension ItemViewController{
       override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = arr?[indexPath.row].text ?? "No items"
+        if let color = UIColor(hexString: selectedCategory?.color).darken(byPercentage: CGFloat(indexPath.row)/CGFloat(arr!.count)){
+            cell.backgroundColor = color
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.textColor = UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)
+        }
+        
         if let k = arr?[indexPath.row].done{
             cell.accessoryType = k ? .checkmark : .none
         }
@@ -131,4 +151,6 @@ extension ItemViewController{
           tableView.deselectRow(at: indexPath, animated: true)
           tableView.reloadData()
       }
+    
+    
 }

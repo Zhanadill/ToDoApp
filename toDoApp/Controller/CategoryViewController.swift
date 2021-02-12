@@ -8,20 +8,28 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 
 class CategoryViewController: RootViewController {
     var categoryArr: Results<Category>?
     let realm = try! Realm()
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorStyle = .none
-        tableView.rowHeight = 80.0
+        tableView.rowHeight = 70.0
         loadCategories()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let color = UIColor(hexString: "5AC8FA"){
+            navigationController?.navigationBar.backgroundColor = color
+            navigationController?.navigationBar.tintColor = UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)
+            navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)!]
+        }
+    }
     
     
     //MARK: loadItems()
@@ -39,6 +47,7 @@ class CategoryViewController: RootViewController {
                let action = UIAlertAction(title: "ADD", style: .default){ (action) in
                    let newCategory = Category()
                    newCategory.name = textField.text!
+                newCategory.color = UIColor.randomFlat()?.hexValue()
                    self.save(category: newCategory)
                    self.tableView.reloadData()
                }
@@ -91,6 +100,12 @@ extension CategoryViewController {
          UITableViewCell {
             let cell = super.tableView(tableView, cellForRowAt: indexPath)
             cell.textLabel?.text = categoryArr?[indexPath.row].name ?? "No Categories"
+            cell.textLabel?.numberOfLines = 0
+            if let color = UIColor(hexString: categoryArr?[indexPath.row].color){
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = UIColor(contrastingBlackOrWhiteColorOn: color, isFlat: true)
+            }
+            cell.backgroundColor = UIColor(hexString: categoryArr?[indexPath.row].color ?? "OOCFFF")
             return cell
        }
        
@@ -99,6 +114,7 @@ extension CategoryViewController {
        //Delegate methods
        override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
            performSegue(withIdentifier: "segue1", sender: self)
+           tableView.deselectRow(at: indexPath, animated: true)
        }
      
        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
