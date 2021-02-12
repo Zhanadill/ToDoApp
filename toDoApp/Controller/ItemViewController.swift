@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class ItemViewController: UITableViewController {
+class ItemViewController: RootViewController {
     var arr: Results<Item>?
     let realm = try! Realm()
     
@@ -22,6 +22,8 @@ class ItemViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorStyle = .none
+        tableView.rowHeight = 80.0
     }
     
     
@@ -59,6 +61,22 @@ class ItemViewController: UITableViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
+    
+    
+    
+    //MARK: deleteCell
+    override func updateModel(at indexPath: IndexPath) {
+        super.updateModel(at: indexPath)
+        do{
+            try realm.write{
+                if let k = arr?[indexPath.row]{
+                    realm.delete(k)
+                }
+            }
+        }catch{
+            print("error in deleting item")
+        }
+    }
 }
 
 
@@ -88,12 +106,13 @@ extension ItemViewController{
           return arr?.count ?? 1
       }
       override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-          let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-          cell.textLabel?.text = arr?[indexPath.row].text ?? "No items"
-          if let k = arr?[indexPath.row].done{
-              cell.accessoryType = k ? .checkmark : .none
-          }
-          return cell
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.textLabel?.text = arr?[indexPath.row].text ?? "No items"
+        if let k = arr?[indexPath.row].done{
+            cell.accessoryType = k ? .checkmark : .none
+        }
+        return cell
+          
       }
       
       

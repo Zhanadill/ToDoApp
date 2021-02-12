@@ -10,12 +10,15 @@ import UIKit
 import RealmSwift
 
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: RootViewController {
     var categoryArr: Results<Category>?
     let realm = try! Realm()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorStyle = .none
+        tableView.rowHeight = 80.0
         loadCategories()
     }
     
@@ -60,6 +63,20 @@ class CategoryViewController: UITableViewController {
         }
         tableView.reloadData()
     }
+    
+    //MARK: deleteCell
+    override func updateModel(at indexPath: IndexPath) {
+        super.updateModel(at: indexPath)
+        do{
+            try realm.write{
+                if let k = categoryArr?[indexPath.row]{
+                    realm.delete(k)
+                }
+            }
+        }catch{
+            print("error in deleting category")
+        }
+    }
 }
 
 
@@ -72,9 +89,9 @@ extension CategoryViewController {
        }
        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->
          UITableViewCell {
-           let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-           cell.textLabel?.text = categoryArr?[indexPath.row].name ?? "No categories"
-           return cell
+            let cell = super.tableView(tableView, cellForRowAt: indexPath)
+            cell.textLabel?.text = categoryArr?[indexPath.row].name ?? "No Categories"
+            return cell
        }
        
      
